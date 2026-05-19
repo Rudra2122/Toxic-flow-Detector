@@ -1,10 +1,6 @@
 # ToxicFlow: Microstructure-Aware Toxic Order Flow Detection
 
 <p align="center">
-  <img src="results/roc_curve.png" width="600"/>
-</p>
-
-<p align="center">
   <b>Detecting adverse selection in real-time limit order books using market microstructure signals.</b>
 </p>
 
