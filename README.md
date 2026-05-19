@@ -5,11 +5,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square"/>
-  <img src="https://img.shields.io/badge/XGBoost-Classifier-orange?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Dataset-999%2C930%20Events-green?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Backtest%20ROC--AUC-0.813-brightgreen?style=flat-square"/>
-  <img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.74%25-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/XGBoost-Classifier-FF6600?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/ROC--AUC-0.813-2ea44f?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.74%25-0075ca?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Dataset-999%2C930%20Events-8A2BE2?style=for-the-badge"/>
 </p>
 
 ---
