@@ -60,7 +60,7 @@ Data was collected over a continuous async WebSocket stream across 7 crypto mark
 | Toxic Trades Flagged | **6.41% of all trades** |
 | Training Rows | **385,761** |
 | Test Rows | **50,781** |
-| Total Dataset | **999,930 live order book events** |
+| Total Dataset | **999,930 real time Binance order book snapshots** |
 
 > In market making at scale, a 3.23% PnL improvement applied consistently across thousands of daily trades represents meaningful edge, especially when only 6.41% of trades require any intervention.
 
