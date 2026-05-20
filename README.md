@@ -5,11 +5,14 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/XGBoost-Classifier-FF6600?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/ROC--AUC-0.813-2ea44f?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.74%25-0075ca?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Dataset-999%2C930%20Events-8A2BE2?style=for-the-badge"/>
+
+  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/C%2B%2B-17-red?style=flat-square"/>
+  <img src="https://img.shields.io/badge/XGBoost-Classifier-orange?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Dataset-999%2C930%20Events-green?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Backtest%20ROC--AUC-0.809-brightgreen?style=flat-square"/>
+  <img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.23%25-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/C%2B%2B-Feature%20Extraction-red?style=flat-square"/>
 </p>
 
 ---
@@ -18,7 +21,11 @@
 
 **ToxicFlow** is a research-driven machine learning system for detecting **toxic order flow** in financial markets using real-time limit order book data streamed live from Binance.
 
-In market making, **adverse selection** occurs when a counterparty trades on information the market maker does not have. The fill price immediately becomes stale and the position loses value. This project builds a **microstructure-aware toxicity classifier** and evaluates whether flagging toxic flow pre-trade improves simulated market-making outcomes.
+In market making, **adverse selection** occurs when a counterparty trades on information the market maker does not have. The fill price immediately becomes stale and the position loses value.
+
+This project builds a **microstructure-aware toxicity classifier using a hybrid C++/Python pipeline for low latency tick-level feature extraction and machine learning based toxicity prediction**, and evaluates whether flagging toxic flow pre-trade improves simulated market-making outcomes.
+
+This problem is central to high-frequency market makers, where adverse selection can systematically erode profitability across millions of daily executions.
 
 Data was collected over a continuous async WebSocket stream across 7 crypto markets, producing **999,930 live order book snapshots** with no synthetic data, no historical CSV downloads, and no simulated markets.
 
@@ -37,25 +44,36 @@ Data was collected over a continuous async WebSocket stream across 7 crypto mark
 ## Performance Summary
 
 > **Two AUC figures appear in this project and refer to different evaluations:**
-> - **Backtest ROC-AUC: 0.813** — model evaluated on the chronological held-out test set (50,781 rows) under real trading simulation conditions with threshold 0.6 and 1.5× spread boost.
-> - **Ablation ROC-AUC: 0.886** — best configuration (Model E, 28 features) evaluated during the cross-asset ablation study across all 7 markets.
+> - **Backtest ROC-AUC: 0.809** — model evaluated on the chronological held-out test set (50,781 rows) under real trading simulation conditions with threshold 0.6 and 1.5× spread boost.
+> - **Ablation ROC-AUC: 0.887** — best configuration (Model E, 28 features) evaluated during the cross-asset ablation study across all 7 markets.
 
 | Metric | Value |
 |---|---|
-| Backtest ROC-AUC | **0.813** |
-| Ablation Best ROC-AUC (Model E) | **0.886** |
-| Baseline Market-Making PnL | **252.0 simulated ticks** |
-| Strategy PnL (toxicity-aware) | **261.4 simulated ticks** |
-| PnL Improvement | **+3.74%** |
+| Backtest ROC-AUC | **0.809** |
+| Ablation Best ROC-AUC (Model E) | **0.887** |
+| Baseline Market-Making PnL | **252.0 PnL units** |
+| Strategy PnL (toxicity-aware) | **260.1 PnL units** |
+| PnL Improvement | **+3.23%** |
 | Sharpe Ratio (Baseline) | **47.71** |
-| Sharpe Ratio (Strategy) | **48.37** |
-| Sharpe Improvement | **+1.38%** |
-| Toxic Trades Flagged | **7.43% of all trades** |
+| Sharpe Ratio (Strategy) | **48.61** |
+| Sharpe Improvement | **+1.87%** |
+| Toxic Trades Flagged | **6.41% of all trades** |
 | Training Rows | **385,761** |
 | Test Rows | **50,781** |
 | Total Dataset | **999,930 live order book events** |
 
-> In market making at scale, a 3.74% PnL improvement applied consistently across thousands of daily trades represents meaningful edge, especially when only 7.43% of trades require any intervention.
+> In market making at scale, a 3.23% PnL improvement applied consistently across thousands of daily trades represents meaningful edge, especially when only 6.41% of trades require any intervention.
+
+---
+## Why This Matters
+
+For market makers, adverse selection is a multi-million dollar problem: quoting stale prices against informed traders systematically erodes profitability.
+
+This project demonstrates that market microstructure signals can identify toxic order flow **before execution**, allowing a market maker to proactively widen quotes only when risk is elevated.
+
+Rather than blindly reducing activity, the system intervenes on only **6.41% of trades** while improving simulated profitability by **+3.23%** and Sharpe by **+1.87%**.
+
+The result is a realistic, low-latency framework for microstructure-aware market making using **real streamed data, C++ feature extraction, and ML based prediction.**
 
 ---
 
@@ -74,10 +92,10 @@ An informed trader aggressively buys. The mid price rises immediately after exec
 
 | # | Question | Answer |
 |---|---|---|
-| 1 | Can toxicity be predicted from microstructure? | ✅ Yes — ROC-AUC 0.813 on unseen data |
+| 1 | Can toxicity be predicted from microstructure? | ✅ Yes — ROC-AUC 0.809 on unseen data |
 | 2 | Do signals generalize across assets? | ✅ Yes — model transfers to AVAX, LINK, LTC |
 | 3 | Which features matter most? | ✅ Spread dynamics + microprice (ablation study) |
-| 4 | Does acting on predictions improve P&L? | ✅ +3.74% PnL, +1.38% Sharpe |
+| 4 | Does acting on predictions improve P&L? | ✅ +3.23% PnL, +1.87% Sharpe |
 
 ---
 
@@ -90,7 +108,7 @@ Live Binance WebSocket Stream
               ↓
     999,930 Order Book Snapshots
               ↓
-    Feature Engineering (28 features)
+    C++ Tick Level Feature Extraction (28 features)
   spread dynamics · imbalance · microprice
   trade direction · lagged signals · rolling vol
               ↓
@@ -107,15 +125,15 @@ Live Binance WebSocket Stream
   Test:  AVAX · LINK · LTC (never seen)
               ↓
      XGBoost Classifier
-     Threshold: 0.6 | Backtest AUC: 0.813
+     Threshold: 0.6 | Backtest AUC: 0.809
               ↓
   Market-Making Simulation
   Toxic predicted → widen spread 1.5×
   Non-toxic → quote at baseline spread
               ↓
-  PnL: 252.0 → 261.4 (+3.74%)
-  Sharpe: 47.71 → 48.37 (+1.38%)
-  Flagged: 7.43% of trades
+  PnL: 252.0 → 260.1 (+3.23%)
+  Sharpe: 47.71 → 48.61 (+1.87%)
+  Flagged: 6.41% of trades
               ↓
     Feature Ablation Study
     Models A → E: AUC 0.500 → 0.886
@@ -232,7 +250,7 @@ Random train/test splitting in time-series financial data causes information lea
   <img src="results/roc_curve.png" width="700"/>
 </p>
 
-**Backtest ROC-AUC = 0.813** on 50,781 held-out test rows across assets never seen during training.
+**Backtest ROC-AUC = 0.809** on 50,781 held-out test rows across assets never seen during training.
 
 ---
 
@@ -250,9 +268,9 @@ Random train/test splitting in time-series financial data causes information lea
 
 | Metric | Baseline MM | Toxic Flow Strategy | Δ |
 |---|---|---|---|
-| Total PnL (simulated ticks) | 252.0 | 261.4 | **+3.74%** |
-| Sharpe Ratio | 47.71 | 48.37 | **+1.38%** |
-| Trades requiring intervention | — | 7.43% | — |
+| Total PnL (simulated ticks) | 252.0 | 260.1 | **+3.23%** |
+| Sharpe Ratio | 47.71 | 48.61 | **+1.87%** |
+| Trades requiring intervention | — | 6.41% | — |
 
 The strategy widens the quoted spread by **1.5×** when predicted toxicity probability exceeds **0.6**. Trades below the threshold are quoted at baseline spread. This replicates real market-making behavior more accurately than naive trade-skipping.
 
@@ -274,11 +292,11 @@ Five model configurations were tested to isolate which features drive predictive
 
 | Model | Feature Set | Features | ROC-AUC | PnL Improvement |
 |---|---|---|---|---|
-| A | Spread only | 1 | 0.500 | 0.0% |
-| B | Spread + Imbalance | 2 | 0.544 | 0.0% |
-| C | Microstructure Features | 3 | 0.834 | +6.6% |
-| D | Full Feature Set | 24 | 0.871 | +6.3% |
-| E | Enhanced Microstructure | 28 | **0.886** | +6.0% |
+| A | Spread only | 1 | 0.500 | Trivial baseline |
+| B | Spread + Imbalance | 2 | 0.530 | 0.0% |
+| C | Microstructure Features | 3 | 0.835 | +6.83% |
+| D | Full Feature Set | 24 | 0.885 | +6.75% |
+| E | Enhanced Microstructure | 28 | **0.887** | +6.50% |
 
 ### ROC-AUC by Feature Set
 <p align="center">
@@ -310,7 +328,7 @@ Adding microprice to the feature set produces the largest single improvement acr
 The model trained on BTC, ETH, SOL, and BNB generalizes to AVAX, LINK, and LTC, assets it never saw during training. Adverse selection patterns arise from microstructure mechanics, not asset identity.
 
 **4. Minimal intervention is sufficient.**
-Only 7.43% of trades are flagged as toxic. The strategy achieves +3.74% PnL improvement by acting on a small fraction of trades, which is operationally realistic for a live market-making system.
+Only 6.41% of trades are flagged as toxic. The strategy achieves +3.23% PnL improvement by acting on a small fraction of trades, which is operationally realistic for a live market-making system.
 
 **5. Spread widening outperforms trade-skipping.**
 Widening quotes by 1.5× on predicted toxic flow captures spread revenue on borderline trades while protecting against adverse moves, a more realistic and profitable execution response than binary skip logic.
@@ -321,7 +339,8 @@ Widening quotes by 1.5× on predicted toxic flow captures spread revenue on bord
 
 | Category | Tools |
 |---|---|
-| Language | Python 3.10 |
+| Language | Python 3.10, C++17 |
+| Systems | C++ Tick Processing, High Speed CSV Feature Extraction |
 | ML | XGBoost, scikit-learn |
 | Data Processing | pandas, NumPy |
 | Visualization | Matplotlib |
@@ -337,11 +356,15 @@ toxic-flow-detector/
 │
 ├── data/
 │   └── orderbook.csv               # 999,930 live Binance order book events
+
+├── cpp/
+│   ├── feature_extractor.cpp      # High performance tick level feature extraction
+│   └── feature_extractor          # compiled binary
 │
 ├── results/
-│   ├── roc_curve.png               # Backtest ROC-AUC = 0.813
+│   ├── roc_curve.png               # Backtest ROC-AUC = 0.809
 │   ├── pnl_curve.png               # Cumulative PnL: baseline vs strategy
-│   ├── pnl_comparison.png          # Total PnL: 252.0 vs 261.4
+│   ├── pnl_comparison.png          # Total PnL: 252.0 vs 260.1
 │   ├── feature_importance.png      # Top features: spread, spread_lag1, trade_side
 │   ├── ablation_auc.png            # AUC progression: 0.500 → 0.886
 │   ├── ablation_pnl.png            # PnL improvement by feature set
@@ -350,7 +373,7 @@ toxic-flow-detector/
 ├── src/
 │   ├── collect_data.py             # Async Binance WebSocket collection pipeline
 │   ├── build_dataset.py            # Feature engineering + toxicity labeling
-│   ├── baseline.py                 # XGBoost training + cross-asset evaluation
+│   ├── train_baseline.py           # XGBoost training + cross-asset evaluation
 │   ├── backtest.py                 # Market-making simulation (spread widening)
 │   ├── ablation_study.py           # 5-model feature ablation (A → E)
 │   └── generate_graphs.py          # All result visualizations
@@ -393,19 +416,30 @@ python src/collect_data.py
 # Runtime: approximately 3–4 hours continuous collection
 ```
 
-**2. Build labeled dataset**
+**2. Run high speed C++ feature extraction**
+```bash
+g++ -O3 -std=c++17 cpp/feature_extractor.cpp -o cpp/feature_extractor
+./cpp/feature_extractor
+```
+
+**3. Build labeled dataset**
 ```bash
 python src/build_dataset.py
 # Engineers 28 microstructure features
 # Labels toxicity using horizon-3 forward mid return
 ```
 
-**3. Train and evaluate classifier**
+**4. Train and evaluate classifier**
 ```bash
-python src/baseline.py
+python src/train_baseline.py
 ```
 
-**4. Run market-making backtest**
+**5. Cross asset evaluation**
+```bash
+python src/cross_asset_chrono.py
+```
+
+**6. Run market-making backtest**
 ```bash
 python src/backtest.py
 ```
@@ -424,32 +458,32 @@ Training complete
 
 Backtest Results
 --------------------------------
-ROC-AUC:           0.8134
+ROC-AUC:           0.8094
 Threshold:         0.6
 Toxic spread boost: 1.5
 
 PnL
 Baseline:          251.9950 simulated ticks
-Strategy:          261.4275 simulated ticks
-Improvement:       +3.74%
+Strategy:          260.1275 simulated ticks
+Improvement:       +3.23%
 
 Sharpe Ratio
 Baseline:          47.7117
 Strategy:          48.3684
-Improvement:       +1.38%
+Improvement:       +1.87%
 
 Risk Control
-Predicted toxic trades: 7.43%
+Predicted toxic trades: 6.41%
 ```
 
-**5. Run ablation study**
+**7. Run ablation study**
 ```bash
 python src/ablation_study.py
 # Tests Models A through E
 # Outputs AUC and PnL improvement per configuration
 ```
 
-**6. Generate all graphs**
+**8. Generate all graphs**
 ```bash
 python src/generate_graphs.py
 # Writes all 6 charts to results/

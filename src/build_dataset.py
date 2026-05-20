@@ -6,7 +6,7 @@ os.makedirs("results", exist_ok=True)
 
 print("Loading data...")
 
-df = pd.read_csv("data/orderbook.csv")
+df = pd.read_csv("results/cpp_features.csv")
 
 print(f"Loaded {len(df):,} rows")
 

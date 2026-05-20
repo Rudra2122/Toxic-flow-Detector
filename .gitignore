@@ -1,17 +1,19 @@
-# Data
-data/
-*.csv
-
 # Python
+venv/
 __pycache__/
 *.pyc
 
-# Mac
+# Large datasets
+data/raw/
+*.csv
+*.parquet
+*.feather
+
+# Results you can regenerate
+results/*.pkl
+
+# C++ binaries
+cpp/feature_extractor
+
+# macOS
 .DS_Store
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Virtual env
-venv/
-.env
