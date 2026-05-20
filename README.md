@@ -6,13 +6,13 @@
 
 <p align="center">
 
-  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square"/>
-  <img src="https://img.shields.io/badge/C%2B%2B-17-red?style=flat-square"/>
-  <img src="https://img.shields.io/badge/XGBoost-Classifier-orange?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Dataset-999%2C930%20Events-green?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Backtest%20ROC--AUC-0.809-brightgreen?style=flat-square"/>
-  <img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.23%25-blue?style=flat-square"/>
-  <img src="https://img.shields.io/badge/C%2B%2B-Feature%20Extraction-red?style=flat-square"/>
+<img src="https://img.shields.io/badge/Backtest%20ROC--AUC-0.809-brightgreen?style=flat-square"/>
+<img src="https://img.shields.io/badge/PnL%20Improvement-%2B3.23%25-blue?style=flat-square"/>
+<img src="https://img.shields.io/badge/Dataset-1M%20Events-green?style=flat-square"/>
+<img src="https://img.shields.io/badge/C%2B%2B-Feature%20Extraction-red?style=flat-square"/>
+<img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square"/>
+<img src="https://img.shields.io/badge/C%2B%2B-17-red?style=flat-square"/>
+<img src="https://img.shields.io/badge/XGBoost-Classifier-orange?style=flat-square"/>
 </p>
 
 ---
